@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"be/neurade/v2/internal/model"
+	"be/neurade/v2/internal/model/converter"
 	"be/neurade/v2/internal/service"
 	"be/neurade/v2/internal/util"
 	"encoding/json"
@@ -30,13 +30,7 @@ func (c *LLMController) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid form data", http.StatusBadRequest)
 		return
 	}
-	userID, _ := strconv.Atoi(r.FormValue("user_id"))
-	request := &model.LLMCreateRequest{
-		UserID:     userID,
-		ModelName:  r.FormValue("model_name"),
-		ModelToken: r.FormValue("model_token"),
-		Status:     "None",
-	}
+	request := converter.RequestToLLMRequest(r)
 	if request.ModelName == "" || request.ModelToken == "" {
 		c.log.Println("Missing required fields")
 		http.Error(w, "Model name and token are required", http.StatusBadRequest)

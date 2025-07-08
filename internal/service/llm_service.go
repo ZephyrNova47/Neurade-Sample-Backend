@@ -6,7 +6,6 @@ import (
 	"be/neurade/v2/internal/model/converter"
 	"be/neurade/v2/internal/repository"
 	"context"
-	"time"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -36,14 +35,7 @@ func (s *LLMService) Create(ctx context.Context, request *model.LLMCreateRequest
 		}
 	}()
 
-	llm := &entity.LLM{
-		UserID:     request.UserID,
-		ModelName:  request.ModelName,
-		ModelToken: request.ModelToken,
-		Status:     request.Status,
-		CreatedAt:  time.Now().Format(time.RFC3339),
-		UpdatedAt:  time.Now().Format(time.RFC3339),
-	}
+	llm := converter.LLMToEntity(request)
 
 	if err := tx.Create(llm).Error; err != nil {
 		tx.Rollback()

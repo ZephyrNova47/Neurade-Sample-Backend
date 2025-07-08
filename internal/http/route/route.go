@@ -10,9 +10,13 @@ import (
 )
 
 type RouteConfig struct {
-	App            *chi.Mux
-	UserController *http.UserController
-	LLMController  *http.LLMController
+	App                     *chi.Mux
+	UserController          *http.UserController
+	LLMController           *http.LLMController
+	CourseController        *http.CourseController
+	AssignmentController    *http.AssignmentController
+	PrController            *http.PrController
+	GitHubWebhookController *http.GitHubWebhookController
 }
 
 func (c *RouteConfig) Setup() *chi.Mux {
@@ -42,6 +46,31 @@ func (c *RouteConfig) Setup() *chi.Mux {
 	r.Route("/llm", func(r chi.Router) {
 		r.Post("/create", c.LLMController.Create)
 		r.Get("/{id}", c.LLMController.GetById)
+	})
+
+	r.Route("/course", func(r chi.Router) {
+		r.Post("/create", c.CourseController.Create)
+		r.Get("/owner/{user_id}", c.CourseController.GetAllByOwner)
+
+		r.Route("/{course_id}", func(r chi.Router) {
+			r.Get("/", c.CourseController.GetByID)
+			r.Route("/pr", func(r chi.Router) {
+				r.Get("/", c.PrController.GetAllByCourse)
+				r.Get("/{pr_id}", c.PrController.GetByID)
+				r.Post("/create", c.PrController.Create)
+			})
+			r.Route("/assignment", func(r chi.Router) {
+				r.Get("/", c.AssignmentController.GetAllByCourse)
+				// r.Get("/{assignment_id}", c.AssignmentController.GetByID)
+				r.Post("/create", c.AssignmentController.Create)
+			})
+		})
+		r.Get("/assignment/{assignment_id}", c.AssignmentController.GetByID)
+	})
+
+	r.Route("/webhook", func(r chi.Router) {
+		r.Post("/fetch-pull-requests", c.GitHubWebhookController.FetchPullRequests)
+		r.Get("/course/{course_id}/pull-requests", c.GitHubWebhookController.GetPullRequestsByCourse)
 	})
 
 	return r

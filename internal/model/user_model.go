@@ -1,13 +1,15 @@
 package model
 
+import "time"
+
 type UserResponse struct {
-	ID          int    `json:"id"`
-	Email       string `json:"email"`
-	Role        string `json:"role"`
-	Verified    bool   `json:"verified"`
-	GithubToken string `json:"github_token,omitempty"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	ID          int       `json:"id"`
+	Email       string    `json:"email"`
+	Role        string    `json:"role"`
+	Verified    bool      `json:"verified"`
+	GithubToken string    `json:"github_token,omitempty"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type UserCreateRequest struct {

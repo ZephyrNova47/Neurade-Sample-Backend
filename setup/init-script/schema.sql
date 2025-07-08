@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS assignments (
     id SERIAL PRIMARY KEY,
     course_id INTEGER NOT NULL,
     assignment_name TEXT NOT NULL,
-    description TEXT NOT NULL,
+    description TEXT,
+    assignment_url TEXT NOT NULL,
     -- due_date TIMESTAMP NOT NULL,
     -- max_score INTEGER NOT NULL DEFAULT 100,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -46,15 +47,23 @@ CREATE TABLE IF NOT EXISTS assignments (
 CREATE TABLE IF NOT EXISTS prs (
     id SERIAL PRIMARY KEY,
     course_id INTEGER NOT NULL,
+    assignment_id INTEGER,
     pr_name TEXT NOT NULL,
     pr_description TEXT NOT NULL,
     status TEXT NOT NULL,
     pr_number INTEGER NOT NULL,
-    assignment_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS chats (
+    id SERIAL PRIMARY KEY,
+    pr_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    chatHistory JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- CREATE TABLE IF NOT EXISTS courses (
 

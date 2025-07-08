@@ -37,7 +37,8 @@ type Config struct {
 	AgentEndpoint string
 	AgentSecret   string
 
-	JWTSecret string
+	JWTSecret           string
+	GitHubWebhookSecret string
 }
 
 func NewConfig() *Config {
@@ -62,8 +63,8 @@ func NewConfig() *Config {
 		DBMaxLifeTimeConnection: dbMaxLifeTimeConnection,
 
 		MinioEndpoint:  fmt.Sprintf("%s:%s", os.Getenv("MINIO_HOST"), os.Getenv("MINIO_PORT")),
-		MinioAccessKey: os.Getenv("MINIO_ACCESS_KEY"),
-		MinioSecretKey: os.Getenv("MINIO_SECRET_KEY"),
+		MinioAccessKey: os.Getenv("MINIO_ACCESS"),
+		MinioSecretKey: os.Getenv("MINIO_SECRET"),
 		MinioUseSSL:    minioUseSSL,
 
 		// QueueHost:     os.Getenv("QUEUE_HOST"),
@@ -77,6 +78,7 @@ func NewConfig() *Config {
 		AgentEndpoint: fmt.Sprintf("%s:%s", os.Getenv("AGENT_HOST"), os.Getenv("AGENT_PORT")),
 		AgentSecret:   os.Getenv("AGENT_SECRET"),
 
-		JWTSecret: os.Getenv("JWT_SECRET"),
+		JWTSecret:           os.Getenv("JWT_SECRET"),
+		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
 	}
 }

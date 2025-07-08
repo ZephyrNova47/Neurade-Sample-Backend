@@ -70,8 +70,8 @@ func (s *UserService) Register(ctx context.Context, request *model.UserCreateReq
 		PasswordHash: string(hashedPassword),
 		Role:         request.Role,
 		Verified:     false,
-		CreatedAt:    time.Now().Format(time.RFC3339),
-		UpdatedAt:    time.Now().Format(time.RFC3339),
+		CreatedAt:    time.Now(),
+		UpdatedAt:    time.Now(),
 	}
 
 	if err := s.UserRepository.Create(tx, user); err != nil {
